@@ -41,7 +41,7 @@
     "cli": "pnpm exec ts-eager src/cli.ts",
     "format": "prettier --write .",
     "format:check": "prettier --check",
-    "lint": "eslint src/ tests/ --ext .js,.ts",
+    "lint": "eslint src/ --ext .js,.ts",
     "prepublishOnly": "pnpm build",
     "test": "pnpm run build:simple && jest"
   },
