@@ -18,6 +18,7 @@ jobs:
         with:
           node-version: ${{ matrix.nodejs }}
 
+      - run: npm install -g pnpm
       - run: pnpm install
       - run: pnpm test
       - run: pnpm lint
