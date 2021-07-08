@@ -8,7 +8,13 @@
     "url": "https://github.com/KineticCafe/release-metadata.git"
   },
   "license": "MIT",
-  "keywords": ["cli", "git", "metadata", "release", "typescript"],
+  "keywords": [
+    "cli",
+    "git",
+    "metadata",
+    "release",
+    "typescript"
+  ],
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -39,11 +45,15 @@
     "prepublishOnly": "pnpm build",
     "test": "pnpm run build:simple && jest"
   },
-  "files": ["dist", "src"],
+  "files": [
+    "dist",
+    "src"
+  ],
   "engines": {
     "node": ">=10"
   },
   "devDependencies": {
+    "@arkweid/lefthook": "^0.7.6",
     "@tsconfig/node10": "^1.0.8",
     "@types/jest": "^26.0.23",
     "@types/node": "^15.14.0",
