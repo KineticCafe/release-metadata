@@ -3,8 +3,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>@kineticcafe/release-metadata - v1.1.0</title>
-	<meta name="description" content="Documentation for @kineticcafe/release-metadata - v1.1.0">
+	<title>@kineticcafe/release-metadata - v1.1.1</title>
+	<meta name="description" content="Documentation for @kineticcafe/release-metadata - v1.1.1">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
 	<script async src="assets/js/search.js" id="search-script"></script>
@@ -23,7 +23,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">@kineticcafe/release-metadata - v1.1.0</a>
+					<a href="index.html" class="title">@kineticcafe/release-metadata - v1.1.1</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -50,7 +50,7 @@
 	</div>
 	<div class="tsd-page-title">
 		<div class="container">
-			<h1>@kineticcafe/release-metadata - v1.1.0</h1>
+			<h1>@kineticcafe/release-metadata - v1.1.1</h1>
 		</div>
 	</div>
 </header>
@@ -114,26 +114,27 @@
 					<code>npm exec release-metadata --save</code>. There are numerous options available for the
 				<code>release-metadata</code> command-line:</p>
 				<ul>
-					<li><code>--path &lt;path&gt;</code>: The path and/or filename for the metadata (implies --save)</li>
+					<li><code>--path &lt;PATH&gt;</code>: The path and/or filename for the metadata (implies --save)</li>
 					<li><code>--save</code>: Writes release-metadata.json to the current directory</li>
 					<li><code>--no-save</code>: Prints to standard output instead of saving, used with --path for
 					reading only</li>
-					<li><code>--merge [original]</code>: Merges the generated release metadata with an existing
-						file, uses <code>--path</code> unless <code>original</code> is provided and incompatible with
-					<code>--merge-original</code>.</li>
-					<li><code>--merge-original &lt;original&gt;</code>: Merges the generated release metadata with the
+					<li><code>--merge [ORIGINAL]</code>: Merges the generated release metadata with an existing
+						file. If just <code>--merge</code> is provided, the original file does not need to exist;
+						if <code>--merge ORIGINAL</code> is provided, the original file must exist. Incompatible
+					with <code>--merge-original</code>.</li>
+					<li><code>--merge-original &lt;ORIGINAL&gt;</code>: Merges the generated release metadata with the
 					original file (the generated data overrides the original data)</li>
-					<li><code>--merge-overlay &lt;overlay&gt;</code>: Merges the overlay file with the generated
+					<li><code>--merge-overlay &lt;OVERLAY&gt;</code>: Merges the overlay file with the generated
 					release metadata (the overlay overrides the generated data)</li>
-					<li><code>--branch &lt;branch&gt;</code>: The default git branch to use, if not main or master</li>
-					<li><code>--remote &lt;remote&gt;</code>: The default git remote to use, if not origin</li>
+					<li><code>--branch &lt;BRANCH&gt;</code>: The default git branch to use, if not main or master</li>
+					<li><code>--remote &lt;REMOTE&gt;</code>: The default git remote to use, if not origin</li>
 					<li><code>--no-git</code>: Disables git processing</li>
 					<li><code>--secure</code>: Resolves only to a secure version of the output</li>
 					<li><code>--secure-if-production</code>: Resolves to a secure version if <code>NODE_ENV</code> is
 					production</li>
 					<li><code>--omit-repo-url</code>: Eliminates the repo URL</li>
-					<li><code>--release-name &lt;name&gt;</code>: The value to use as the release name</li>
-					<li><code>--timestamp &lt;timestamp&gt;</code>: The timestamp to use</li>
+					<li><code>--release-name &lt;NAME&gt;</code>: The value to use as the release name</li>
+					<li><code>--timestamp &lt;TIMESTAMP&gt;</code>: The timestamp to use</li>
 				</ul>
 				<p>Both <code>--merge-original</code> and <code>--merge-overlay</code> may be used at the same time. See
 				<a href="modules.html#configoptions">ConfigOptions</a> for more information.</p>
