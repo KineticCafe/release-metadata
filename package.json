@@ -1,6 +1,6 @@
 {
   "name": "@kineticcafe/release-metadata",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Generate a file that describes a release for use in various ways",
   "author": "Kinetic Cafe & contributors",
   "repository": {

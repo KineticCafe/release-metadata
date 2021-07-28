@@ -63,7 +63,7 @@ interface RawCliConfig {
   timestamp?: string
 }
 
-const run = async (options: RawCliConfig): Promise<void> => {
+const run = (options: RawCliConfig): void => {
   const path = resolvePath(options.path)
 
   if (options.merge && options.mergeOriginal) {
@@ -92,7 +92,7 @@ const run = async (options: RawCliConfig): Promise<void> => {
     timestamp: options.timestamp,
   }
 
-  const resolved = await resolve('command-line', config)
+  const resolved = resolve('command-line', config)
 
   save(resolved, { path, save: Boolean(options.save) })
 }

@@ -122,10 +122,29 @@ The output of `create()` is an async function that returns a release metadata
 map that could be used in an `express` handler, for example:
 
 ```javascript
-import releaseMetadata from './release-metadata'
+import { releaseMetadata } from './release-metadata.mjs'
 
 express.get('/release', async (_req, res, _next) => {
   res.send(await releaseMetadata())
+})
+```
+
+#### Static Presentation
+
+Use the `createStatic` function to read and process the release metadata and
+return a static release metadata map.
+
+```javascript
+// ./release-metadata.mjs
+import { createStatic } from '@kineticcafe/release-metadata'
+
+export const releaseMetadata = createStatic({ secure: true })
+
+// app.mjs
+import { releaseMetadata } from './release-metadata.mjs'
+
+express.get('/release', (_req, res, _next) => {
+  res.send(releaseMetadata)
 })
 ```
 

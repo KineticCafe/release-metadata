@@ -1,22 +1,19 @@
-import { exec } from 'child_process'
-import { promisify } from 'util'
+import { execSync } from 'child_process'
 import { basename, resolve } from 'path'
 
 import { _Git, RepoInfo } from './types'
 
-const run = promisify(exec)
-
-export const git = async (options: _Git): Promise<undefined | RepoInfo> => {
+export const git = (options: _Git): undefined | RepoInfo => {
   if (options.enabled === false) {
     return undefined
   }
 
-  const url: string = await gitUrl(options.remote)
+  const url: string = gitUrl(options.remote)
 
   return {
     name: name(url),
-    ref: await gitRef(options),
-    source_path: await gitPath(),
+    ref: gitRef(options),
+    source_path: gitPath(),
     type: 'git',
     url,
   }
@@ -25,17 +22,10 @@ export const git = async (options: _Git): Promise<undefined | RepoInfo> => {
 const name = (url?: string): undefined | string =>
   url ? basename(url, '.git') : undefined
 
-type ExecResult = {
-  stdout: string | Buffer
-}
+const gitPath = (): string =>
+  resolve(process.cwd(), runGit('rev-parse', '--show-cdup'))
 
-const gitPath = async (): Promise<string> => {
-  const relativePath = await runGit('rev-parse', '--show-cdup')
-
-  return resolve(process.cwd(), relativePath)
-}
-
-const gitUrl = async (remote?: string): Promise<string> => {
+const gitUrl = (remote?: string): string => {
   try {
     return gitRemoteGetUrl(remote ?? 'origin')
   } catch {
@@ -43,19 +33,16 @@ const gitUrl = async (remote?: string): Promise<string> => {
   }
 }
 
-const gitRemoteGetUrl = async (remote: string): Promise<string> => {
+const gitRemoteGetUrl = (remote: string): string => {
   try {
-    return await runGit('remote', 'get-url', remote)
+    return runGit('remote', 'get-url', remote)
   } catch {
-    return await gitRemoteShow(remote)
+    return gitRemoteShow(remote)
   }
 }
 
-const gitRemoteShow = async (remote: string): Promise<string> => {
-  const url: string = await runGit('remote', 'show', '-n', remote)
-
-  return parseFetchUrl(url)
-}
+const gitRemoteShow = (remote: string): string =>
+  parseFetchUrl(runGit('remote', 'show', '-n', remote))
 
 const parseFetchUrl = (url: string): string => {
   const match = url.match(/\n\s+Fetch URL: (?<fetch>[^\n]+)/)
@@ -64,27 +51,17 @@ const parseFetchUrl = (url: string): string => {
   return groups?.fetch ?? 'UNKNOWN'
 }
 
-const gitRef = async (options: _Git): Promise<string> => {
+const gitRef = (options: _Git): string => {
   try {
-    const ref: string = await runGit('rev-parse', 'HEAD')
-
-    return gitRefWithBranch(ref, options)
+    return gitRefWithBranch(runGit('rev-parse', 'HEAD'), options)
   } catch {
     return 'UNKNOWN'
   }
 }
 
-const gitRefWithBranch = async (
-  ref: string,
-  options: _Git
-): Promise<string> => {
+const gitRefWithBranch = (ref: string, options: _Git): string => {
   try {
-    const branch: string = await runGit(
-      'symbolic-ref',
-      '--quiet',
-      '--short',
-      'HEAD'
-    )
+    const branch: string = runGit('symbolic-ref', '--quiet', '--short', 'HEAD')
 
     return options.branchTest(branch) ? ref : `${branch} (${ref})`
   } catch {
@@ -92,17 +69,7 @@ const gitRefWithBranch = async (
   }
 }
 
-const runGit = async (...args: string[]): Promise<string> => {
-  try {
-    const result: ExecResult = await run(`git ${args.join(' ')}`)
-    const stdout = result.stdout
-
-    return (stdout as string).trim()
-  } catch (error) {
-    const stderr = error.stderr
-    const stdout = error.stdout
-    const message = stderr + '' || stdout + '' || 'Error from git'
-
-    throw new Error(message)
-  }
-}
+const runGit = (...args: string[]): string =>
+  execSync(`git ${args.join(' ')}`)
+    .toString()
+    .trim()

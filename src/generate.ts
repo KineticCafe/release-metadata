@@ -15,27 +15,24 @@ import {
 /**
  * Build a release metadata object for the current repository.
  */
-export const build = async (
-  mode: Mode,
-  options?: _Config
-): Promise<ReleaseMetadata> => {
+export const build = (mode: Mode, options?: _Config): ReleaseMetadata => {
   const opts: _Config = processOptions(mode, options)
 
   if (mode === 'application' && check('requireFile', opts)) {
     throw new Error('Release Metadata generation is not allowed in secure mode')
   }
 
-  const info: undefined | RepoInfo = await git(opts.git)
+  const info: undefined | RepoInfo = git(opts.git)
 
   return format(info, opts)
 }
 
-export const resolve = async (
+export const resolve = (
   mode: Mode,
   options: ConfigOptions
-): Promise<ProcessedMetadata> => {
+): ProcessedMetadata => {
   const config: _Config = processOptions(mode, options)
-  return postProcess(await build(mode, config), config)
+  return postProcess(build(mode, config), config)
 }
 
 export const postProcess = (
