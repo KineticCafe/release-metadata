@@ -54,26 +54,27 @@ Release metadata can be generated for the current application repository with
 `npm exec release-metadata --save`. There are numerous options available for the
 `release-metadata` command-line:
 
-- `--path <path>`: The path and/or filename for the metadata (implies --save)
+- `--path <PATH>`: The path and/or filename for the metadata (implies --save)
 - `--save`: Writes release-metadata.json to the current directory
 - `--no-save`: Prints to standard output instead of saving, used with --path for
   reading only
-- `--merge [original]`: Merges the generated release metadata with an existing
-  file, uses `--path` unless `original` is provided and incompatible with
-  `--merge-original`.
-- `--merge-original <original>`: Merges the generated release metadata with the
+- `--merge [ORIGINAL]`: Merges the generated release metadata with an existing
+  file. If just `--merge` is provided, the original file does not need to exist;
+  if `--merge ORIGINAL` is provided, the original file must exist. Incompatible
+  with `--merge-original`.
+- `--merge-original <ORIGINAL>`: Merges the generated release metadata with the
   original file (the generated data overrides the original data)
-- `--merge-overlay <overlay>`: Merges the overlay file with the generated
+- `--merge-overlay <OVERLAY>`: Merges the overlay file with the generated
   release metadata (the overlay overrides the generated data)
-- `--branch <branch>`: The default git branch to use, if not main or master
-- `--remote <remote>`: The default git remote to use, if not origin
+- `--branch <BRANCH>`: The default git branch to use, if not main or master
+- `--remote <REMOTE>`: The default git remote to use, if not origin
 - `--no-git`: Disables git processing
 - `--secure`: Resolves only to a secure version of the output
 - `--secure-if-production`: Resolves to a secure version if `NODE_ENV` is
   production
 - `--omit-repo-url`: Eliminates the repo URL
-- `--release-name <name>`: The value to use as the release name
-- `--timestamp <timestamp>`: The timestamp to use
+- `--release-name <NAME>`: The value to use as the release name
+- `--timestamp <TIMESTAMP>`: The timestamp to use
 
 Both `--merge-original` and `--merge-overlay` may be used at the same time. See
 {@link ConfigOptions} for more information.

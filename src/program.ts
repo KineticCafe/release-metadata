@@ -11,7 +11,7 @@ export const program = (): Command =>
     .createCommand()
     .version('1.0.0')
     .option(
-      '--path <path>',
+      '--path <PATH>',
       'The path and/or filename for the metadata (implies --save)'
     )
     .option('--save', 'Writes release-metadata.json to the current directory')
@@ -20,22 +20,22 @@ export const program = (): Command =>
       'Prints to standard output instead of saving, used with --path for reading only'
     )
     .option(
-      '--merge [original]',
-      'Merges the generated release metadata with an existing file, uses --path unless original is provided and incompatible with --merge-original'
+      '--merge [ORIGINAL]',
+      'Merges the generated release metadata with an existing file, uses the value of --path unless ORIGINAL is provided; if ORIGINAL is provided, the file must exist; incompatible with --merge-original'
     )
     .option(
-      '--merge-original <original>',
+      '--merge-original <ORIGINAL>',
       'Merges the generated release metadata with the original file'
     )
     .option(
-      '--merge-overlay <overlay>',
+      '--merge-overlay <OVERLAY>',
       'Merges the overlay file with the generated release metadata'
     )
     .option(
-      '--branch <branch>',
+      '--branch <BRANCH>',
       'The default git branch to use, if not main or master'
     )
-    .option('--remote <remote>', 'The default git remote to use, if not origin')
+    .option('--remote <REMOTE>', 'The default git remote to use, if not origin')
     .option('--no-git', 'Disables git processing')
     .option('--secure', 'Resolves only to a secure version of the output')
     .option(
@@ -43,8 +43,8 @@ export const program = (): Command =>
       'Resolves to a secure version if NODE_ENV is production'
     )
     .option('--omit-repo-url', 'Eliminates the repo URL')
-    .option('--release-name <name>', 'The value to use as the release name')
-    .option('--timestamp <timestamp>', 'The timestamp to use')
+    .option('--release-name <NAME>', 'The value to use as the release name')
+    .option('--timestamp <TIMESTAMP>', 'The timestamp to use')
     .action(run)
 
 interface RawCliConfig {
@@ -70,9 +70,12 @@ const run = (options: RawCliConfig): void => {
     throw new Error('Cannot specify both --merge and --merge-original')
   }
 
-  const original = loadFile(
-    options.mergeOriginal ?? options.merge === true ? path : options.merge
-  )
+  /* The original file does not need to exist if just using `--merge`. */
+  const original =
+    options.merge === true
+      ? loadFile(path, true)
+      : loadFile(options.mergeOriginal ?? options.merge)
+
   const overlay = loadFile(options.mergeOverlay)
 
   const config: ConfigOptions = {

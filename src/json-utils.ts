@@ -79,7 +79,10 @@ export const filter = <T>(value: Array<T | null | undefined>): T[] =>
     return filtered
   }, [])
 
-export const loadFile = (filename: string | undefined | false): JSONObject => {
+export const loadFile = (
+  filename: string | undefined | false,
+  optional = false
+): JSONObject => {
   // Handle a special case where the file will be possibly undefined or false
   // from the command-line options.
   if (filename === false || filename === undefined) {
@@ -91,6 +94,10 @@ export const loadFile = (filename: string | undefined | false): JSONObject => {
   }
 
   if (!existsSync(filename)) {
+    if (optional) {
+      return {}
+    }
+
     throw new Error(`Filename ${filename} does not exist.`)
   }
 

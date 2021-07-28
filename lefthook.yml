@@ -4,6 +4,8 @@ pre-push:
     packages-audit:
       tags: frontend security
       run: pnpm audit
+    build:
+      run: pnpm build
 
 pre-commit:
   parallel: true
@@ -17,3 +19,5 @@ pre-commit:
     tests:
       glob: '*.{js,ts}'
       run: pnpm exec jest --findRelatedTests {staged_files}
+    build:
+      run: pnpm build
