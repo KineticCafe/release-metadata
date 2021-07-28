@@ -68,7 +68,7 @@ export const createStatic = (options?: ConfigOptions): ProcessedMetadata => {
 
   const metadata = fileExists
     ? fromJSON(loadFile(config.path))
-    : buildSync('application', config)
+    : build('application', config)
 
   return postProcess(metadata, config)
 }
@@ -77,4 +77,4 @@ export const createStatic = (options?: ConfigOptions): ProcessedMetadata => {
  * Build a release metadata object.
  */
 export const generate = (options?: ConfigOptions): ProcessedMetadata =>
-  resolve('command-line', options)
+  resolve('command-line', processOptions('command-line', options))
