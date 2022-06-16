@@ -18,6 +18,6 @@ pre-commit:
       run: pnpm exec prettier --check {staged_files}
     tests:
       glob: '*.{js,ts}'
-      run: pnpm exec jest --findRelatedTests {staged_files}
+      run: pnpm exec jest --findRelatedTests {staged_files} --passWithNoTests
     build:
       run: pnpm build
