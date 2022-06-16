@@ -12,10 +12,10 @@ Generates and provides release metadata for the current application.
       "url": "https://github.com/KineticCafe/release-metadata-ts.git",
       "name": "release-metadata-ts",
       "type": "git",
-      "source_path": "/Users/austin/dev/oss/kineticcafe/release-metadata/release-metadata-ts"
+      "source_path": "/home/halostatue/projects/kineticcafe/release-metadata/release-metadata-ts"
     }
   ],
-  "source_path": "/Users/austin/dev/oss/kineticcafe/release-metadata/release-metadata-ts",
+  "source_path": "/home/halostatue/projects/kineticcafe/release-metadata/release-metadata-ts",
   "packages": [
     {
       "name": "node",

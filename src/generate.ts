@@ -9,14 +9,17 @@ import {
   ProcessedMetadata,
   ReleaseMetadata,
   RepoInfo,
-  _Config,
+  ConfigInternal,
 } from './types'
 
 /**
  * Build a release metadata object for the current repository.
  */
-export const build = (mode: Mode, options?: _Config): ReleaseMetadata => {
-  const opts: _Config = processOptions(mode, options)
+export const build = (
+  mode: Mode,
+  options?: ConfigInternal
+): ReleaseMetadata => {
+  const opts: ConfigInternal = processOptions(mode, options)
 
   if (mode === 'application' && check('requireFile', opts)) {
     throw new Error('Release Metadata generation is not allowed in secure mode')
@@ -31,18 +34,18 @@ export const resolve = (
   mode: Mode,
   options: ConfigOptions
 ): ProcessedMetadata => {
-  const config: _Config = processOptions(mode, options)
+  const config: ConfigInternal = processOptions(mode, options)
   return postProcess(build(mode, config), config)
 }
 
 export const postProcess = (
   metadata: ReleaseMetadata,
-  config: _Config
+  config: ConfigInternal
 ): ProcessedMetadata => secured(merge(metadata, config), config)
 
 const format = (
   info: RepoInfo | undefined,
-  options: _Config
+  options: ConfigInternal
 ): ReleaseMetadata => {
   const repos = info ? [info] : []
   const thisPackage: PackageInfo = {

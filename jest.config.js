@@ -1,10 +1,18 @@
 module.exports = {
-  roots: ['<rootDir>/src'],
-  testMatch: [
-    '**/__tests__/**/*.+(ts|tsx|js)',
-    '**/?(*.)+(spec|test).+(ts|tsx|js)',
-  ],
-  transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest',
+  clearMocks: true,
+  collectCoverage: true,
+  collectCoverageFrom: ['./src/**', '!./src/types.ts'],
+  coverageProvider: 'v8',
+  coverageThreshold: {
+    global: {
+      branches: 70,
+      functions: 90,
+      lines: 80,
+      statements: -20,
+    },
   },
+  moduleFileExtensions: ['js', 'ts', 'json', 'node'],
+  testEnvironment: 'node',
+  testRegex: '/tests/.+\\.(test|spec)\\.[jt]s$',
+  transform: { '^.+\\.ts$': 'ts-jest' },
 }

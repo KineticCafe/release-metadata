@@ -1,10 +1,10 @@
-import { _Config, _Security } from './types'
+import { ConfigInternal, SecurityInternal } from './types'
 
 type CheckTypes = 'enabled' | 'requireFile' | 'omitRepoUrl'
 
 const env = process.env.NODE_ENV || 'development'
 
-export const check = (check: CheckTypes, opts: _Config): boolean => {
+export const check = (check: CheckTypes, opts: ConfigInternal): boolean => {
   if (!isEnabled(opts.secure)) {
     return false
   }
@@ -23,10 +23,13 @@ export const check = (check: CheckTypes, opts: _Config): boolean => {
   }
 }
 
-const requireFile = (secure: _Security): boolean => Boolean(secure.requireFile)
-const omitRepoUrl = (secure: _Security): boolean => Boolean(secure.omitRepoUrl)
+const requireFile = (secure: SecurityInternal): boolean =>
+  Boolean(secure.requireFile)
 
-const isEnabled = (secure: _Security): boolean =>
+const omitRepoUrl = (secure: SecurityInternal): boolean =>
+  Boolean(secure.omitRepoUrl)
+
+const isEnabled = (secure: SecurityInternal): boolean =>
   secure.enabled
     ? typeof secure.env === 'object'
       ? secure.env[env]

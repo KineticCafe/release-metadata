@@ -9,7 +9,7 @@ import {
   ApplicationFn,
   ConfigOptions,
   ProcessedMetadata,
-  _Config,
+  ConfigInternal,
 } from './types'
 
 export {
@@ -34,7 +34,7 @@ export {
  * Creates an async function that returns a processed release metadata map.
  */
 export const create = (options?: ConfigOptions): ApplicationFn => {
-  const config: _Config = processOptions('application', options)
+  const config: ConfigInternal = processOptions('application', options)
 
   return async (): Promise<ProcessedMetadata> => {
     const fileExists = existsSync(config.path)
@@ -57,7 +57,7 @@ export const create = (options?: ConfigOptions): ApplicationFn => {
  * Creates a static processed release metadata map.
  */
 export const createStatic = (options?: ConfigOptions): ProcessedMetadata => {
-  const config: _Config = processOptions('application', options)
+  const config: ConfigInternal = processOptions('application', options)
   const fileExists = existsSync(config.path)
 
   if (check('requireFile', config) && !fileExists) {
