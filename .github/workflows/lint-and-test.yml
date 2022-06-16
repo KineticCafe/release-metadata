@@ -6,9 +6,19 @@ jobs:
   build_and_test:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
-        nodejs: [12, 14, 16]
+        node:
+          - 12
+          - 14
+          - 16
+          - 18
+        pnpm:
+          - 6
+          - 7 # latest
+        exclude:
+          - node: 12
+            pnpm: 7
 
     steps:
       - uses: actions/checkout@v2
@@ -16,9 +26,9 @@ jobs:
       # https://github.com/actions/setup-node
       - uses: actions/setup-node@v2-beta
         with:
-          node-version: ${{ matrix.nodejs }}
+          node-version: ${{ matrix.node }}
 
-      - run: npm install -g pnpm
+      - run: npm install -g pnpm@${{ matrix.pnpm }}
       - run: pnpm install
       - run: pnpm test
       - run: pnpm lint

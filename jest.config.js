@@ -1,7 +1,13 @@
 module.exports = {
   clearMocks: true,
   collectCoverage: true,
-  collectCoverageFrom: ['./src/**', '!./src/types.ts'],
+  collectCoverageFrom: [
+    './src/**',
+    '!./src/types.ts',
+    '!./src/cli.ts',
+    '!./src/json-utils.ts',
+    '!./src/program.ts',
+  ],
   coverageProvider: 'v8',
   coverageThreshold: {
     global: {
