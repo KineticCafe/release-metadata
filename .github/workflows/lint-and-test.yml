@@ -1,9 +1,15 @@
 name: Lint and test
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-  build_and_test:
+  typescript-build-and-test:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
@@ -21,16 +27,23 @@ jobs:
             pnpm: 7
 
     steps:
-      - uses: actions/checkout@v2
-
-      # https://github.com/actions/setup-node
-      - uses: actions/setup-node@v2-beta
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2
+        with:
+          version: ${{ matrix.pnpm }}
+      - uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
+          cache: pnpm
+          cache-dependency-path: ts/pnpm-lock.yaml
 
-      - run: npm install -g pnpm@${{ matrix.pnpm }}
-      - run: pnpm install
+      - run: pnpm install --frozen-lockfile
+        working-directory: ./ts
       - run: pnpm test
+        working-directory: ./ts
       - run: pnpm lint
+        working-directory: ./ts
       - run: pnpm format:check
+        working-directory: ./ts
       - run: pnpm build:all
+        working-directory: ./ts
