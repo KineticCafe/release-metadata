@@ -151,7 +151,7 @@ express.get('/release', (_req, res, _next) => {
 
 ## Installation
 
-```console
+```sh
 # Pick your poison:
 $ npm install @kineticcafe/release-metadata # OR
 $ yarn install @kineticcafe/release-metadata # OR
@@ -161,7 +161,7 @@ $ pnpm install @kineticcafe/release-metadata
 If the only purpose is the generation of a release metadata file from the
 command-line, release-metadata may be installed as a development dependency:
 
-```console
+```sh
 $ npm install -D @kineticcafe/release-metadata # OR
 $ yarn install -D @kineticcafe/release-metadata # OR
 $ pnpm install -D @kineticcafe/release-metadata

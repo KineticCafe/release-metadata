@@ -5,11 +5,12 @@ import { resolvePath } from './options'
 import { ConfigOptions, JSONObject } from './types'
 import { resolve } from './generate'
 import { loadFile } from './json-utils'
+import { version as VERSION } from '../package.json'
 
 export const program = (): Command =>
   new Command()
     .createCommand()
-    .version('1.0.0')
+    .version(VERSION)
     .option(
       '--path <PATH>',
       'The path and/or filename for the metadata (implies --save)'
