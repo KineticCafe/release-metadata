@@ -15,12 +15,12 @@ import {
   ReleaseMetadata,
   RepoInfo,
   SecureRepoInfo,
-  _Config,
+  ConfigInternal,
 } from './types'
 
 export const secured = (
   value: ReleaseMetadata,
-  config: _Config
+  config: ConfigInternal
 ): ProcessedMetadata => {
   if (check('enabled', config)) {
     const securedMetadata = {
@@ -39,7 +39,7 @@ export const secured = (
 
 export const merge = (
   metadata: ReleaseMetadata,
-  options: _Config
+  options: ConfigInternal
 ): ReleaseMetadata => {
   const original = mergePartials(partial(options.merge.original), metadata)
   const overlay = mergePartials(original, partial(options.merge.overlay))
@@ -150,10 +150,6 @@ const filterVersions = (
   const result: { [key: string]: string } = {}
 
   for (const k in value) {
-    if (!json.isString(k)) {
-      continue
-    }
-
     const v: JSONValue = value[k]
 
     if (json.isString(v)) {
@@ -216,13 +212,13 @@ const resolvedPackage = (
 
 const securedRepos = (
   value: JSONValue[] | RepoInfo[],
-  config: _Config
+  config: ConfigInternal
 ): SecureRepoInfo[] =>
   json.filter(value.map((v: JSONValue | RepoInfo) => securedRepo(v, config)))
 
 const securedRepo = (
   value: JSONValue | RepoInfo,
-  config: _Config
+  config: ConfigInternal
 ): SecureRepoInfo | undefined => {
   if (!json.isObject(value)) {
     return undefined

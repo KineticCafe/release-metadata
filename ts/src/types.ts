@@ -251,7 +251,7 @@ export type SecurityOptions = {
    * this. If `true`, security options will be enabled when `NODE_ENV` is
    * `production`.
    */
-  env?: { [key: string]: boolean } | boolean
+  env?: { [key: string]: boolean } | string | boolean
   /**
    * If `false`, disables security processing.
    */
@@ -331,31 +331,31 @@ export type ConfigOptions = {
   path?: string
 }
 
-export type _Git = {
+export type GitInternal = {
   branchTest: GitBranchTestFunction
   enabled: boolean
   remote: string | undefined
 }
 
-export type _Merge = {
+export type MergeInternal = {
   original: JSONObject
   overlay: JSONObject
 }
 
-export type _Security = {
+export type SecurityInternal = {
   enabled: boolean
-  env: { [key: string]: boolean } | false | undefined
+  env: { [key: string]: boolean } | false
   filter?: SecurityFilterFn | undefined
   omitRepoUrl: boolean | undefined
   requireFile: boolean | undefined
 }
 
-export type _Config = {
-  git: _Git
-  merge: _Merge
+export type ConfigInternal = {
+  git: GitInternal
+  merge: MergeInternal
   name: string | undefined
   path: string
-  secure: _Security
+  secure: SecurityInternal
   timestamp: string
 }
 

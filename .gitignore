@@ -2,9 +2,9 @@
 release-metadata.json
 .DS_Store
 .idea/*
-/build/
-/dist/
-/docs/
-/lib/
-/node_modules/
-/coverage/
+build/
+dist/
+docs/
+lib/
+node_modules/
+coverage/

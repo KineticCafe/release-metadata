@@ -5,7 +5,10 @@ a feature request, or code contributions. Here are our guidelines for
 contributions:
 
 - Changes _will not_ be accepted without tests.
-- Match our coding style; we use ESLint and Prettier.
+- Match our coding style for the implementation(s) you’re updating.
+  - Our Ruby code uses Standard Ruby.
+  - Our TypeScript code uses ESLint and Prettier.
+  - Our Elixir code uses `mix format` and Credo.
 - Use a thoughtfully named topic branch that contains your change. Rebase
   your commits into logical chunks as necessary.
 - Use [quality commit messages][].
@@ -18,15 +21,15 @@ contributions:
 Here's the most direct way to get your work merged into the project:
 
 - Fork the project.
-- Clone down your fork (`git clone git://github.com/<username>/release-metadata-ts.git`).
+- Clone down your fork (`git clone git://github.com/<username>/release-metadata.git`).
 - Create a topic branch to contain your change (`git checkout -b my_awesome_feature`).
 - Hack away, add tests. Not necessarily in that order.
-- Make sure everything still passes with `mix test`.
-- Make sure the code is clean with `mix credo --strict`.
-- Make sure the code is clean with `mix credo --strict`.
-- If necessary, rebase your commits into logical chunks, without errors.
+- Ensure that all tests still pass.
+- Ensure that there are no code formatting changes that need to be applied and
+  that there are no warnings or errors put out during the build or test
+  processes.
 - Push the branch up (`git push origin my_awesome_feature`).
-- Create a pull request against KineticCafe/release-metadata-ts does and the
+- Create a pull request against KineticCafe/release-metadata does and the
   why you think it should be merged.
 
 ### Contributors
@@ -34,4 +37,4 @@ Here's the most direct way to get your work merged into the project:
 - Austin Ziegler created release-metadata based on work previously done with
   the cartage gems.
 
-[quality commit messages]: http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html
+[quality commit messages]: https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html

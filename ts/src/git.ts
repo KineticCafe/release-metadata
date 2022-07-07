@@ -1,9 +1,9 @@
 import { execSync } from 'child_process'
 import { basename, resolve } from 'path'
 
-import { _Git, RepoInfo } from './types'
+import { GitInternal, RepoInfo } from './types'
 
-export const git = (options: _Git): undefined | RepoInfo => {
+export const git = (options: GitInternal): undefined | RepoInfo => {
   if (options.enabled === false) {
     return undefined
   }
@@ -13,17 +13,16 @@ export const git = (options: _Git): undefined | RepoInfo => {
   return {
     name: name(url),
     ref: gitRef(options),
-    source_path: gitPath(),
+    source_path: gitToplevelPath(),
     type: 'git',
     url,
   }
 }
 
-const name = (url?: string): undefined | string =>
-  url ? basename(url, '.git') : undefined
+const name = (url: string): string => basename(url, '.git')
 
-const gitPath = (): string =>
-  resolve(process.cwd(), runGit('rev-parse', '--show-cdup'))
+const gitToplevelPath = (): string =>
+  resolve(process.cwd(), runGit('rev-parse', '--show-toplevel'))
 
 const gitUrl = (remote?: string): string => {
   try {
@@ -51,7 +50,7 @@ const parseFetchUrl = (url: string): string => {
   return groups?.fetch ?? 'UNKNOWN'
 }
 
-const gitRef = (options: _Git): string => {
+const gitRef = (options: GitInternal): string => {
   try {
     return gitRefWithBranch(runGit('rev-parse', 'HEAD'), options)
   } catch {
@@ -59,11 +58,16 @@ const gitRef = (options: _Git): string => {
   }
 }
 
-const gitRefWithBranch = (ref: string, options: _Git): string => {
+const gitRefWithBranch = (ref: string, options: GitInternal): string => {
   try {
     const branch: string = runGit('symbolic-ref', '--quiet', '--short', 'HEAD')
 
-    return options.branchTest(branch) ? ref : `${branch} (${ref})`
+    if (options.branchTest(branch)) {
+      return ref
+    }
+
+    return `${branch} (${ref})`
+    // return options.branchTest(branch) ? ref : `${branch} (${ref})`
   } catch {
     return ref
   }

@@ -1,23 +1,29 @@
 ---
 pre-push:
   commands:
-    packages-audit:
+    ts-packages-audit:
+      root: ts/
       tags: frontend security
       run: pnpm audit
-    build:
+    ts-build:
+      root: ts/
       run: pnpm build
 
 pre-commit:
   parallel: true
   commands:
-    eslint:
+    ts-eslint:
+      root: ts/
       glob: '*.{js,ts}'
       run: pnpm exec eslint {staged_files}
-    format:
+    ts-format:
+      root: ts/
       glob: '*.{js,ts}'
       run: pnpm exec prettier --check {staged_files}
-    tests:
+    ts-tests:
+      root: ts/
       glob: '*.{js,ts}'
-      run: pnpm exec jest --findRelatedTests {staged_files}
-    build:
+      run: pnpm exec jest --findRelatedTests {staged_files} --passWithNoTests
+    ts-build:
+      root: ts/
       run: pnpm build

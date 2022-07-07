@@ -1,6 +1,8 @@
 # release-metadata
 
 Generates and provides release metadata for the current application.
+Implementations are provided for TypeScript, Elixir, and Ruby. See the README
+files for each implementation for more details.
 
 ```json
 {
@@ -12,10 +14,10 @@ Generates and provides release metadata for the current application.
       "url": "https://github.com/KineticCafe/release-metadata-ts.git",
       "name": "release-metadata-ts",
       "type": "git",
-      "source_path": "/Users/austin/dev/oss/kineticcafe/release-metadata/release-metadata-ts"
+      "source_path": "/home/halostatue/projects/kineticcafe/release-metadata/release-metadata-ts"
     }
   ],
-  "source_path": "/Users/austin/dev/oss/kineticcafe/release-metadata/release-metadata-ts",
+  "source_path": "/home/halostatue/projects/kineticcafe/release-metadata/release-metadata-ts",
   "packages": [
     {
       "name": "node",
@@ -48,133 +50,14 @@ There are two use cases for `ReleaseMetadata`:
 - generating a release metadata file for inclusion in a release package;
 - presenting a release metadata collection output through an API.
 
-### Generating Metadata
+## Licence
 
-Release metadata can be generated for the current application repository with
-`npm exec release-metadata --save`. There are numerous options available for the
-`release-metadata` command-line:
-
-- `--path <PATH>`: The path and/or filename for the metadata (implies --save)
-- `--save`: Writes release-metadata.json to the current directory
-- `--no-save`: Prints to standard output instead of saving, used with --path for
-  reading only
-- `--merge [ORIGINAL]`: Merges the generated release metadata with an existing
-  file. If just `--merge` is provided, the original file does not need to exist;
-  if `--merge ORIGINAL` is provided, the original file must exist. Incompatible
-  with `--merge-original`.
-- `--merge-original <ORIGINAL>`: Merges the generated release metadata with the
-  original file (the generated data overrides the original data)
-- `--merge-overlay <OVERLAY>`: Merges the overlay file with the generated
-  release metadata (the overlay overrides the generated data)
-- `--branch <BRANCH>`: The default git branch to use, if not main or master
-- `--remote <REMOTE>`: The default git remote to use, if not origin
-- `--no-git`: Disables git processing
-- `--secure`: Resolves only to a secure version of the output
-- `--secure-if-production`: Resolves to a secure version if `NODE_ENV` is
-  production
-- `--omit-repo-url`: Eliminates the repo URL
-- `--release-name <NAME>`: The value to use as the release name
-- `--timestamp <TIMESTAMP>`: The timestamp to use
-
-Both `--merge-original` and `--merge-overlay` may be used at the same time. See
-{@link ConfigOptions} for more information.
-
-This metadata file can be manipulated by other tools to include more
-information, if desired, such as the current version of Node.js, or it can
-merge an existing metadata file when `--merge` is provided.
-
-The timestamp value can be overridden by setting `RELEASE_TIMESTAMP` in
-OS environment variables.
-
-#### Programmatic Generation
-
-It is possible to write your own script to generate the release metadata so that
-it can become part of a build or packaging script. The script will look
-something like this:
-
-```javascript
-import { generate } from '@kineticcafe/release-metadata'
-
-const config = {
-  // Set configuration options here. See ConfigOptions documentation for
-  // details.
-  path: 'release.json',
-  name: 'my-package',
-}
-
-generate(config).then((processed) => {
-  // Do something with the processed metadata.
-})
-```
-
-### Presenting Metadata
-
-Use the `create` function to read and process the release metadata for
-presentation from an API.
-
-```javascript
-// ./release-metadata.mjs
-import { create } from '@kineticcafe/release-metadata'
-
-export const releaseMetadata = create()
-```
-
-The output of `create()` is an async function that returns a release metadata
-map that could be used in an `express` handler, for example:
-
-```javascript
-import { releaseMetadata } from './release-metadata.mjs'
-
-express.get('/release', async (_req, res, _next) => {
-  res.send(await releaseMetadata())
-})
-```
-
-#### Static Presentation
-
-Use the `createStatic` function to read and process the release metadata and
-return a static release metadata map.
-
-```javascript
-// ./release-metadata.mjs
-import { createStatic } from '@kineticcafe/release-metadata'
-
-export const releaseMetadata = createStatic({ secure: true })
-
-// app.mjs
-import { releaseMetadata } from './release-metadata.mjs'
-
-express.get('/release', (_req, res, _next) => {
-  res.send(releaseMetadata)
-})
-```
-
-## Installation
-
-```sh
-# Pick your poison:
-npm install @kineticcafe/release-metadata
-yarn install @kineticcafe/release-metadata
-pnpm install @kineticcafe/release-metadata
-```
-
-If the only purpose is the generation of a release metadata file from the
-command-line, release-metadata may be installed as a development dependency:
-
-```sh
-npm install -D @kineticcafe/release-metadata
-yarn install -D @kineticcafe/release-metadata
-pnpm install -D @kineticcafe/release-metadata
-```
-
-## License
-
-Licensed under the MIT license.
+Licensed under the MIT licence.
 
 ## Community and Contributing
 
-We welcome your contributions, as described in [Contributing.md]. Like all
-Kinetic Cafe [open source projects], is under the Kinetic Cafe Open Source
+We welcome your contributions, as described in [Contributing.md][]. Like all
+Kinetic Cafe [open source projects][], is under the Kinetic Cafe Open Source
 [Code of Conduct][kccoc].
 
 [contributing.md]: Contributing.md

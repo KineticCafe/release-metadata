@@ -11,12 +11,10 @@ module.exports = {
   },
   overrides: [
     {
-      files: [
-        '**/__tests__/*.{j,t}s?(x)',
-        '**/tests/**/*.{spec,test}.{j,t}s?(x)',
-      ],
-      env: {
-        jest: true,
+      files: ['tests/**/*.test.{j,t}s', 'tests/support/*.{j,t}s'],
+      env: { jest: true },
+      rules: {
+        '@typescript-eslint/no-var-requires': 'off',
       },
     },
   ],

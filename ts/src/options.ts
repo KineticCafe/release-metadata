@@ -8,16 +8,18 @@ import {
   MergeOptions,
   Mode,
   SecurityOptions,
-  _Config,
-  _Git,
-  _Merge,
-  _Security,
+  ConfigInternal,
+  GitInternal,
+  MergeInternal,
+  SecurityInternal,
 } from './types'
 
 export const processOptions = (
   mode: Mode,
   options?: ConfigOptions
-): _Config => {
+): ConfigInternal => {
+  validateMode(mode)
+
   return {
     git: resolveGit(options?.git),
     merge: resolveMerge(options?.merge),
@@ -44,12 +46,24 @@ export const resolvePath = (path?: string): string => {
     : newPath
 }
 
+const validateMode = (mode: Mode): void => {
+  switch (mode as string) {
+    case 'application':
+    case 'command-line': {
+      return
+    }
+    default: {
+      throw new Error(`Invalid mode '${mode}' provided.`)
+    }
+  }
+}
+
 const defaultBranchTest = (mainBranch?: string): GitBranchTestFunction =>
   mainBranch
     ? (branch: string): boolean => branch === mainBranch
     : (branch: string): boolean => branch === 'main' || branch === 'master'
 
-const resolveGit = (git?: boolean | GitOptions): _Git => {
+const resolveGit = (git?: boolean | GitOptions): GitInternal => {
   const branchTest = defaultBranchTest()
 
   return git === false
@@ -71,14 +85,14 @@ const resolveGit = (git?: boolean | GitOptions): _Git => {
       }
 }
 
-const resolveMerge = (merge?: MergeOptions): _Merge => {
+const resolveMerge = (merge?: MergeOptions): MergeInternal => {
   return { original: merge?.original ?? {}, overlay: merge?.overlay ?? {} }
 }
 
 const resolveSecurity = (
   mode: Mode,
   secure?: boolean | SecurityOptions
-): _Security => {
+): SecurityInternal => {
   if (secure == null) {
     secure = mode === 'application'
   }
@@ -87,7 +101,7 @@ const resolveSecurity = (
     case false: {
       return {
         enabled: false,
-        env: undefined,
+        env: false,
         filter: undefined,
         omitRepoUrl: undefined,
         requireFile: undefined,
@@ -105,13 +119,20 @@ const resolveSecurity = (
     default: {
       return {
         enabled: secure.enabled ?? true,
-        env: secure.env === true ? { production: true } : secure.env,
-        filter: secure.filter,
+        env:
+          secure.env === true
+            ? { production: true }
+            : typeof secure.env === 'string'
+            ? { [secure.env]: true }
+            : typeof secure.env === 'object'
+            ? (secure.env as { [key: string]: boolean })
+            : false,
+        filter: typeof secure.filter === 'function' ? secure.filter : undefined,
         omitRepoUrl: secure.omitRepoUrl ?? false,
         requireFile:
           secure.requireFile == null
             ? mode === 'application'
-            : secure.requireFile,
+            : Boolean(secure.requireFile),
       }
     }
   }
