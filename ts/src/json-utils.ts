@@ -1,30 +1,22 @@
-import { isPlainObject } from 'is-plain-object'
+import { existsSync, readFileSync } from 'node:fs'
 
-import { JSONObject, JSONValue } from './types'
-import { existsSync, readFileSync } from 'fs'
+import type { JSONObject, JSONValue } from './types'
 
-export const notEmpty = (
-  value: JSONValue | null | undefined
-): value is JSONValue => {
+export const notEmpty = (value: JSONValue | null | undefined): value is JSONValue => {
   if (value === null && value !== undefined) {
     return false
   }
   return true
 }
 
-export const isArray = (value: JSONValue): value is JSONValue[] =>
-  Array.isArray(value)
+export const isArray = (value: JSONValue): value is JSONValue[] => Array.isArray(value)
 export const isBoolean = (value: JSONValue): value is boolean =>
   typeof value === 'boolean'
 export const isNull = (value: JSONValue): value is null => value === null
-export const isNumber = (value: JSONValue): value is number =>
-  typeof value === 'number'
-export const isObject = (value: JSONValue): value is JSONObject =>
-  isPlainObject(value)
-export const isString = (value: JSONValue): value is string =>
-  typeof value === 'string'
-export const isUndefined = (value: JSONValue): value is undefined =>
-  value === undefined
+export const isNumber = (value: JSONValue): value is number => typeof value === 'number'
+export const isObject = (value: JSONValue): value is JSONObject => isPlainObject(value)
+export const isString = (value: JSONValue): value is string => typeof value === 'string'
+export const isUndefined = (value: JSONValue): value is undefined => value === undefined
 
 export const asArray = (value: JSONValue): JSONValue[] | undefined =>
   isArray(value) ? value : undefined
@@ -81,7 +73,7 @@ export const filter = <T>(value: Array<T | null | undefined>): T[] =>
 
 export const loadFile = (
   filename: string | undefined | false,
-  optional = false
+  optional = false,
 ): JSONObject => {
   // Handle a special case where the file will be possibly undefined or false
   // from the command-line options.
@@ -101,5 +93,24 @@ export const loadFile = (
     throw new Error(`Filename ${filename} does not exist.`)
   }
 
-  return JSON.parse(readFileSync(filename) + '')
+  return JSON.parse(readFileSync(filename, 'utf-8'))
+}
+
+const isPlainObject = (o: unknown): boolean => {
+  const isObject = (o: unknown): o is object =>
+    Object.prototype.toString.call(o) === '[object Object]'
+
+  if (!isObject(o)) return false
+
+  const ctor = o.constructor
+
+  if (ctor === undefined) return true
+
+  const prot = ctor.prototype
+
+  if (isObject(prot) === false) return false
+
+  if (Object.hasOwn(prot, 'isPrototypeOf') === false) return false
+
+  return true
 }

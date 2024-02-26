@@ -9,9 +9,9 @@ describe('resolve/2', () => {
   jest.spyOn(process, 'cwd').mockReturnValue(expectedPath)
 
   test('throws an exception if secure in application mode', () => {
-    expect(() =>
-      resolve('application', { secure: { requireFile: true } })
-    ).toThrowError('Release Metadata generation is not allowed in secure mode')
+    expect(() => resolve('application', { secure: { requireFile: true } })).toThrowError(
+      'Release Metadata generation is not allowed in secure mode',
+    )
   })
 
   test('builds a full structure if command-line mode', () => {

@@ -1,10 +1,11 @@
-import deepmerge from 'deepmerge'
 import { basename, extname } from 'path'
+import deepmerge from 'deepmerge'
 
 import * as json from './json-utils'
 import { check } from './security'
 
 import {
+  ConfigInternal,
   JSONObject,
   JSONValue,
   PackageInfo,
@@ -15,12 +16,11 @@ import {
   ReleaseMetadata,
   RepoInfo,
   SecureRepoInfo,
-  ConfigInternal,
 } from './types'
 
 export const secured = (
   value: ReleaseMetadata,
-  config: ConfigInternal
+  config: ConfigInternal,
 ): ProcessedMetadata => {
   if (check('enabled', config)) {
     const securedMetadata = {
@@ -39,7 +39,7 @@ export const secured = (
 
 export const merge = (
   metadata: ReleaseMetadata,
-  options: ConfigInternal
+  options: ConfigInternal,
 ): ReleaseMetadata => {
   const original = mergePartials(partial(options.merge.original), metadata)
   const overlay = mergePartials(original, partial(options.merge.overlay))
@@ -47,13 +47,12 @@ export const merge = (
   return resolved(partial(overlay))
 }
 
-export const fromJSON = (
-  metadata: JSONObject | ReleaseMetadata
-): ReleaseMetadata => resolved(partial(metadata))
+export const fromJSON = (metadata: JSONObject | ReleaseMetadata): ReleaseMetadata =>
+  resolved(partial(metadata))
 
 const mergePartials = (
   target: PartialReleaseMetadata,
-  source: PartialReleaseMetadata
+  source: PartialReleaseMetadata,
 ): PartialReleaseMetadata => {
   return {
     name: source.name ?? target.name,
@@ -114,9 +113,7 @@ const partialRepo = (value: JSONValue): PartialRepoInfo | undefined => {
   }
 }
 
-const partialPackages = (
-  value: JSONValue
-): PartialPackageInfo[] | undefined => {
+const partialPackages = (value: JSONValue): PartialPackageInfo[] | undefined => {
   if (json.isObject(value)) {
     return json.filter([partialPackage(value)])
   }
@@ -141,7 +138,7 @@ const partialPackage = (value: JSONValue): PartialPackageInfo | undefined => {
 }
 
 const filterVersions = (
-  value: JSONObject | undefined
+  value: JSONObject | undefined,
 ): { [key: string]: string } | undefined => {
   if (json.isUndefined(value)) {
     return undefined
@@ -165,9 +162,7 @@ const filterVersions = (
 const resolvedRepos = (value: JSONValue[] | PartialRepoInfo[]): RepoInfo[] =>
   json.filter(value.map((v: JSONValue | PartialRepoInfo) => resolvedRepo(v)))
 
-const resolvedRepo = (
-  value: JSONValue | PartialRepoInfo
-): RepoInfo | undefined => {
+const resolvedRepo = (value: JSONValue | PartialRepoInfo): RepoInfo | undefined => {
   if (!json.isObject(value)) {
     return undefined
   }
@@ -186,15 +181,11 @@ const resolvedRepo = (
   }
 }
 
-const resolvedPackages = (
-  value: JSONValue[] | PartialPackageInfo[]
-): PackageInfo[] =>
-  json.filter(
-    value.map((v: JSONValue | PartialPackageInfo) => resolvedPackage(v))
-  )
+const resolvedPackages = (value: JSONValue[] | PartialPackageInfo[]): PackageInfo[] =>
+  json.filter(value.map((v: JSONValue | PartialPackageInfo) => resolvedPackage(v)))
 
 const resolvedPackage = (
-  value: JSONValue | PartialPackageInfo
+  value: JSONValue | PartialPackageInfo,
 ): PackageInfo | undefined => {
   if (!json.isObject(value)) {
     return undefined
@@ -212,13 +203,13 @@ const resolvedPackage = (
 
 const securedRepos = (
   value: JSONValue[] | RepoInfo[],
-  config: ConfigInternal
+  config: ConfigInternal,
 ): SecureRepoInfo[] =>
   json.filter(value.map((v: JSONValue | RepoInfo) => securedRepo(v, config)))
 
 const securedRepo = (
   value: JSONValue | RepoInfo,
-  config: ConfigInternal
+  config: ConfigInternal,
 ): SecureRepoInfo | undefined => {
   if (!json.isObject(value)) {
     return undefined
@@ -237,7 +228,7 @@ const securedRepo = (
 
 const mergeList = <T>(
   target: T[] | undefined,
-  source: T[] | undefined
+  source: T[] | undefined,
 ): T[] | undefined => {
   if (Array.isArray(target)) {
     return Array.isArray(source) ? [...target, ...source] : target
@@ -248,7 +239,7 @@ const mergeList = <T>(
 
 const mergeExt = (
   target: JSONObject | undefined,
-  source: JSONObject | undefined
+  source: JSONObject | undefined,
 ): JSONObject | undefined => {
   if (json.isObject(target)) {
     return json.isObject(source) ? deepmerge(target, source) : target

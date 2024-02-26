@@ -1,10 +1,24 @@
 *.log
-release-metadata.json
+*.swp
+*~
 .DS_Store
-.idea/*
-build/
-dist/
-docs/
-lib/
-node_modules/
+.envrc
 coverage/
+doc/
+docs/
+release-metadata.json
+tmp/
+work/
+
+# TypeScript project ignores
+ts/build/
+ts/dist/
+ts/lib/
+ts/node_modules/
+
+# Ruby project ignores
+ruby/.bundle/
+ruby/.rake_tasks~
+ruby/Gemfile.lock
+ruby/gemfiles/*.lock
+ruby/pkg/

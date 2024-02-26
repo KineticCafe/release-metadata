@@ -15,7 +15,7 @@ describe('check/2', () => {
         expect(
           check('enabled', {
             secure: { enabled: true, env: { test: true } },
-          })
+          }),
         ).toBe(true)
       })
 
@@ -23,7 +23,7 @@ describe('check/2', () => {
         expect(
           check('enabled', {
             secure: { enabled: true, env: { production: true } },
-          })
+          }),
         ).toBe(false)
       })
     })
@@ -39,9 +39,9 @@ describe('check/2', () => {
     })
 
     test('returns true when enabled', () => {
-      expect(
-        check('requireFile', { secure: { enabled: true, requireFile: true } })
-      ).toBe(true)
+      expect(check('requireFile', { secure: { enabled: true, requireFile: true } })).toBe(
+        true,
+      )
     })
 
     describe('when using environment support', () => {
@@ -49,7 +49,7 @@ describe('check/2', () => {
         expect(
           check('requireFile', {
             secure: { enabled: true, env: { test: true }, requireFile: true },
-          })
+          }),
         ).toBe(true)
       })
 
@@ -57,7 +57,7 @@ describe('check/2', () => {
         expect(
           check('requireFile', {
             secure: { enabled: true, env: { production: true } },
-          })
+          }),
         ).toBe(false)
       })
     })
@@ -73,9 +73,9 @@ describe('check/2', () => {
     })
 
     test('returns true when enabled', () => {
-      expect(
-        check('omitRepoUrl', { secure: { enabled: true, omitRepoUrl: true } })
-      ).toBe(true)
+      expect(check('omitRepoUrl', { secure: { enabled: true, omitRepoUrl: true } })).toBe(
+        true,
+      )
     })
 
     describe('when using environment support', () => {
@@ -83,7 +83,7 @@ describe('check/2', () => {
         expect(
           check('omitRepoUrl', {
             secure: { enabled: true, env: { test: true }, omitRepoUrl: true },
-          })
+          }),
         ).toBe(true)
       })
 
@@ -91,7 +91,7 @@ describe('check/2', () => {
         expect(
           check('omitRepoUrl', {
             secure: { enabled: true, env: { production: true } },
-          })
+          }),
         ).toBe(false)
       })
     })

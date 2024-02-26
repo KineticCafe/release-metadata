@@ -1,16 +1,11 @@
 import { existsSync } from 'fs'
 
 import { build, postProcess, resolve } from './generate'
-import { fromJSON } from './transform'
-import { check } from './security'
-import { processOptions } from './options'
 import { loadFile } from './json-utils'
-import {
-  ApplicationFn,
-  ConfigOptions,
-  ProcessedMetadata,
-  ConfigInternal,
-} from './types'
+import { processOptions } from './options'
+import { check } from './security'
+import { fromJSON } from './transform'
+import { ApplicationFn, ConfigInternal, ConfigOptions, ProcessedMetadata } from './types'
 
 export {
   ApplicationFn,
@@ -40,9 +35,7 @@ export const create = (options?: ConfigOptions): ApplicationFn => {
     const fileExists = existsSync(config.path)
 
     if (check('requireFile', config) && !fileExists) {
-      throw new Error(
-        `secure.requireFile is enabled, but ${config.path} does not exist`
-      )
+      throw new Error(`secure.requireFile is enabled, but ${config.path} does not exist`)
     }
 
     const metadata = fileExists
@@ -61,9 +54,7 @@ export const createStatic = (options?: ConfigOptions): ProcessedMetadata => {
   const fileExists = existsSync(config.path)
 
   if (check('requireFile', config) && !fileExists) {
-    throw new Error(
-      `secure.requireFile is enabled, but ${config.path} does not exist`
-    )
+    throw new Error(`secure.requireFile is enabled, but ${config.path} does not exist`)
   }
 
   const metadata = fileExists

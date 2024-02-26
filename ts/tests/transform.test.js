@@ -42,15 +42,15 @@ const rawMetadata = {
 describe('secured/2', () => {
   describe('secures the output when enabled', () => {
     test('omits root-level source_path', () => {
-      expect(
-        secured(rawMetadata, { secure: { enabled: true } })
-      ).not.toHaveProperty('source_path')
+      expect(secured(rawMetadata, { secure: { enabled: true } })).not.toHaveProperty(
+        'source_path',
+      )
     })
 
     test('omits root-level packages', () => {
-      expect(
-        secured(rawMetadata, { secure: { enabled: true } })
-      ).not.toHaveProperty('packages')
+      expect(secured(rawMetadata, { secure: { enabled: true } })).not.toHaveProperty(
+        'packages',
+      )
     })
 
     test('cleans up the ref value to omit branch names', () => {
@@ -59,7 +59,7 @@ describe('secured/2', () => {
           ...rawMetadata,
           repos: [{ ...repoData, ref: `branch (${repoData.ref})` }],
         },
-        { secure: { enabled: true } }
+        { secure: { enabled: true } },
       )
 
       expect(cooked).toHaveProperty('repos[0].ref', repoData.ref)
@@ -82,7 +82,7 @@ describe('secured/2', () => {
 
   test('makes no changes when unsecured', () => {
     expect(secured(rawMetadata, { secure: { enabled: false } })).toStrictEqual(
-      rawMetadata
+      rawMetadata,
     )
   })
 })
@@ -113,8 +113,8 @@ describe('merge/2', () => {
             },
             overlay: {},
           },
-        }
-      )
+        },
+      ),
     ).toStrictEqual({
       ...rawMetadata,
       ext: {
@@ -142,8 +142,8 @@ describe('merge/2', () => {
             original: {},
             overlay: { name: 'unified-repo' },
           },
-        }
-      )
+        },
+      ),
     ).toStrictEqual({
       ...rawMetadata,
       name: 'unified-repo',
@@ -163,7 +163,7 @@ describe('fromJSON/1', () => {
         repos: [3],
         source_path: 'source_path',
         packages: [],
-      })
+      }),
     ).toStrictEqual({
       name: 'name',
       timestamp: 'timestamp',
@@ -186,7 +186,7 @@ describe('fromJSON/1', () => {
         },
         source_path: 'source_path',
         packages: [],
-      })
+      }),
     ).toStrictEqual({
       name: 'name',
       timestamp: 'timestamp',
@@ -221,7 +221,7 @@ describe('fromJSON/1', () => {
         ],
         source_path: 'source_path',
         packages: [],
-      })
+      }),
     ).toStrictEqual({
       name: 'name',
       timestamp: 'timestamp',
@@ -255,7 +255,7 @@ describe('fromJSON/1', () => {
           },
           name: 'node',
         },
-      })
+      }),
     ).toStrictEqual({
       name: 'name',
       timestamp: 'timestamp',
@@ -290,7 +290,7 @@ describe('fromJSON/1', () => {
           },
           'invalid',
         ],
-      })
+      }),
     ).toStrictEqual({
       name: 'name',
       timestamp: 'timestamp',

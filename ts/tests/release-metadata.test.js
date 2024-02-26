@@ -42,7 +42,7 @@ describe('createStatic', () => {
   test('throws an exception if secure in application mode and the file does not exist', () => {
     jest.spyOn(fs, 'existsSync').mockReturnValue(false)
     expect(() => createStatic({ secure: { requireFile: true } })).toThrowError(
-      'secure.requireFile is enabled, but /path/to/test-repo/release-metadata.json does not exist'
+      'secure.requireFile is enabled, but /path/to/test-repo/release-metadata.json does not exist',
     )
   })
 
@@ -64,7 +64,7 @@ describe('createStatic', () => {
         ],
         source_path: expectedPath,
         timestamp: '19990526134532',
-      })
+      }),
     )
 
     expect(createStatic({ secure: { requireFile: true } })).toMatchObject({
@@ -118,9 +118,9 @@ describe('create', () => {
   test('throws an exception if secure in application mode and the file does not exist', async () => {
     jest.spyOn(fs, 'existsSync').mockReturnValue(false)
     await expect(
-      async () => await create({ secure: { requireFile: true } })()
+      async () => await create({ secure: { requireFile: true } })(),
     ).rejects.toThrowError(
-      'secure.requireFile is enabled, but /path/to/test-repo/release-metadata.json does not exist'
+      'secure.requireFile is enabled, but /path/to/test-repo/release-metadata.json does not exist',
     )
   })
 
@@ -142,7 +142,7 @@ describe('create', () => {
         ],
         source_path: expectedPath,
         timestamp: '19990526134532',
-      })
+      }),
     )
 
     const fn = create({ secure: { requireFile: true } })

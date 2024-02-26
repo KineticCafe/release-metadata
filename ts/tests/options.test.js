@@ -5,9 +5,7 @@ const testApplication = (options) => processOptions('application', options)
 
 describe('processOptions/2', () => {
   test('fails if an invalid mode is provided', () => {
-    expect(() => processOptions('foo')).toThrowError(
-      `Invalid mode 'foo' provided`
-    )
+    expect(() => processOptions('foo')).toThrowError(`Invalid mode 'foo' provided`)
   })
 
   test('returns meaningful defaults for command-line mode', () => {
@@ -134,9 +132,7 @@ describe('processOptions/2', () => {
       })
 
       test('accepts the spdcified name of the remote', () => {
-        expect(
-          testCommandLine({ git: { remote: 'kineticcafe' } })
-        ).toMatchObject({
+        expect(testCommandLine({ git: { remote: 'kineticcafe' } })).toMatchObject({
           git: { remote: 'kineticcafe' },
         })
       })
@@ -198,11 +194,9 @@ describe('processOptions/2', () => {
           })
         })
         test('when false', () => {
-          expect(testApplication({ secure: { enabled: false } })).toMatchObject(
-            {
-              secure: { enabled: false },
-            }
-          )
+          expect(testApplication({ secure: { enabled: false } })).toMatchObject({
+            secure: { enabled: false },
+          })
         })
         test('when omitted', () => {
           expect(testApplication({ secure: {} })).toMatchObject({
@@ -228,11 +222,9 @@ describe('processOptions/2', () => {
           })
         })
         test('when a string', () => {
-          expect(testApplication({ secure: { env: 'staging' } })).toMatchObject(
-            {
-              secure: { env: { staging: true } },
-            }
-          )
+          expect(testApplication({ secure: { env: 'staging' } })).toMatchObject({
+            secure: { env: { staging: true } },
+          })
         })
         test('when a map of environments', () => {
           expect(
@@ -240,7 +232,7 @@ describe('processOptions/2', () => {
               secure: {
                 env: { production: true, development: false, staging: true },
               },
-            })
+            }),
           ).toMatchObject({
             secure: {
               env: { production: true, development: false, staging: true },
@@ -251,9 +243,7 @@ describe('processOptions/2', () => {
 
       describe('respects secure.filter', () => {
         test('when a function', () => {
-          expect(
-            testApplication({ secure: { filter: () => false } })
-          ).toMatchObject({
+          expect(testApplication({ secure: { filter: () => false } })).toMatchObject({
             secure: { filter: expect.any(Function) },
           })
         })
@@ -266,16 +256,12 @@ describe('processOptions/2', () => {
 
       describe('respects secure.omitRepoUrl', () => {
         test('when true', () => {
-          expect(
-            testApplication({ secure: { omitRepoUrl: true } })
-          ).toMatchObject({
+          expect(testApplication({ secure: { omitRepoUrl: true } })).toMatchObject({
             secure: { omitRepoUrl: true },
           })
         })
         test('when false', () => {
-          expect(
-            testApplication({ secure: { omitRepoUrl: false } })
-          ).toMatchObject({
+          expect(testApplication({ secure: { omitRepoUrl: false } })).toMatchObject({
             secure: { omitRepoUrl: false },
           })
         })
@@ -288,16 +274,12 @@ describe('processOptions/2', () => {
 
       describe('respects secure.requireFile', () => {
         test('when true', () => {
-          expect(
-            testApplication({ secure: { requireFile: true } })
-          ).toMatchObject({
+          expect(testApplication({ secure: { requireFile: true } })).toMatchObject({
             secure: { requireFile: true },
           })
         })
         test('when false', () => {
-          expect(
-            testApplication({ secure: { requireFile: false } })
-          ).toMatchObject({
+          expect(testApplication({ secure: { requireFile: false } })).toMatchObject({
             secure: { requireFile: false },
           })
         })
@@ -382,7 +364,7 @@ describe('processOptions/2', () => {
         expect(
           testCommandLine({
             path: 'relative',
-          })
+          }),
         ).toMatchObject({
           path: '/some/absolute/path/relative/release-metadata.json',
         })

@@ -23,15 +23,9 @@ export const check = (check: CheckTypes, opts: ConfigInternal): boolean => {
   }
 }
 
-const requireFile = (secure: SecurityInternal): boolean =>
-  Boolean(secure.requireFile)
+const requireFile = (secure: SecurityInternal): boolean => Boolean(secure.requireFile)
 
-const omitRepoUrl = (secure: SecurityInternal): boolean =>
-  Boolean(secure.omitRepoUrl)
+const omitRepoUrl = (secure: SecurityInternal): boolean => Boolean(secure.omitRepoUrl)
 
 const isEnabled = (secure: SecurityInternal): boolean =>
-  secure.enabled
-    ? typeof secure.env === 'object'
-      ? secure.env[env]
-      : true
-    : false
+  secure.enabled ? (typeof secure.env === 'object' ? secure.env[env] : true) : false

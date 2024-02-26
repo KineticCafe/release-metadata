@@ -1,24 +1,21 @@
-import { check } from './security'
-import { merge, secured } from './transform'
 import { git } from './git'
 import { processOptions } from './options'
+import { check } from './security'
+import { merge, secured } from './transform'
 import {
+  ConfigInternal,
   ConfigOptions,
   Mode,
   PackageInfo,
   ProcessedMetadata,
   ReleaseMetadata,
   RepoInfo,
-  ConfigInternal,
 } from './types'
 
 /**
  * Build a release metadata object for the current repository.
  */
-export const build = (
-  mode: Mode,
-  options?: ConfigInternal
-): ReleaseMetadata => {
+export const build = (mode: Mode, options?: ConfigInternal): ReleaseMetadata => {
   const opts: ConfigInternal = processOptions(mode, options)
 
   if (mode === 'application' && check('requireFile', opts)) {
@@ -30,23 +27,17 @@ export const build = (
   return format(info, opts)
 }
 
-export const resolve = (
-  mode: Mode,
-  options: ConfigOptions
-): ProcessedMetadata => {
+export const resolve = (mode: Mode, options: ConfigOptions): ProcessedMetadata => {
   const config: ConfigInternal = processOptions(mode, options)
   return postProcess(build(mode, config), config)
 }
 
 export const postProcess = (
   metadata: ReleaseMetadata,
-  config: ConfigInternal
+  config: ConfigInternal,
 ): ProcessedMetadata => secured(merge(metadata, config), config)
 
-const format = (
-  info: RepoInfo | undefined,
-  options: ConfigInternal
-): ReleaseMetadata => {
+const format = (info: RepoInfo | undefined, options: ConfigInternal): ReleaseMetadata => {
   const repos = info ? [info] : []
   const thisPackage: PackageInfo = {
     name: process.release.name,

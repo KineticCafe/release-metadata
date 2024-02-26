@@ -1,23 +1,20 @@
-import { isAbsolute, join } from 'path'
 import { existsSync, statSync } from 'fs'
+import { isAbsolute, join } from 'path'
 
 import {
+  ConfigInternal,
   ConfigOptions,
   GitBranchTestFunction,
+  GitInternal,
   GitOptions,
+  MergeInternal,
   MergeOptions,
   Mode,
-  SecurityOptions,
-  ConfigInternal,
-  GitInternal,
-  MergeInternal,
   SecurityInternal,
+  SecurityOptions,
 } from './types'
 
-export const processOptions = (
-  mode: Mode,
-  options?: ConfigOptions
-): ConfigInternal => {
+export const processOptions = (mode: Mode, options?: ConfigOptions): ConfigInternal => {
   validateMode(mode)
 
   return {
@@ -73,16 +70,16 @@ const resolveGit = (git?: boolean | GitOptions): GitInternal => {
         remote: undefined,
       }
     : git === true || git == null
-    ? {
-        branchTest,
-        enabled: true,
-        remote: 'origin',
-      }
-    : {
-        branchTest: git.branchTest ?? defaultBranchTest(git.branch),
-        enabled: git.enabled ?? true,
-        remote: git.remote ?? 'origin',
-      }
+      ? {
+          branchTest,
+          enabled: true,
+          remote: 'origin',
+        }
+      : {
+          branchTest: git.branchTest ?? defaultBranchTest(git.branch),
+          enabled: git.enabled ?? true,
+          remote: git.remote ?? 'origin',
+        }
 }
 
 const resolveMerge = (merge?: MergeOptions): MergeInternal => {
@@ -91,11 +88,9 @@ const resolveMerge = (merge?: MergeOptions): MergeInternal => {
 
 const resolveSecurity = (
   mode: Mode,
-  secure?: boolean | SecurityOptions
+  security?: boolean | SecurityOptions,
 ): SecurityInternal => {
-  if (secure == null) {
-    secure = mode === 'application'
-  }
+  const secure = security == null ? mode === 'application' : security
 
   switch (secure) {
     case false: {
@@ -123,10 +118,10 @@ const resolveSecurity = (
           secure.env === true
             ? { production: true }
             : typeof secure.env === 'string'
-            ? { [secure.env]: true }
-            : typeof secure.env === 'object'
-            ? (secure.env as { [key: string]: boolean })
-            : false,
+              ? { [secure.env]: true }
+              : typeof secure.env === 'object'
+                ? (secure.env as { [key: string]: boolean })
+                : false,
         filter: typeof secure.filter === 'function' ? secure.filter : undefined,
         omitRepoUrl: secure.omitRepoUrl ?? false,
         requireFile:

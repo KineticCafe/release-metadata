@@ -129,10 +129,7 @@ export type ReleaseMetadata = SecureReleaseMetadata & {
   ext?: JSONObject
 }
 
-export type ProcessedMetadata =
-  | SecureReleaseMetadata
-  | ReleaseMetadata
-  | JSONObject
+export type ProcessedMetadata = SecureReleaseMetadata | ReleaseMetadata | JSONObject
 export type ApplicationFn = () => Promise<ProcessedMetadata>
 
 /**
@@ -142,7 +139,7 @@ export type ApplicationFn = () => Promise<ProcessedMetadata>
  */
 export type SecurityFilterFn = (
   _secured: SecureReleaseMetadata,
-  _metadata: JSONObject
+  _metadata: JSONObject,
 ) => JSONObject
 
 export type PartialRepoInfo = {
